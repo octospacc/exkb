@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="#stylesheet"?>
-<!DOCTYPE html [<!ATTLIST xsl:stylesheet id ID #REQUIRED>]>
+<!DOCTYPE xml [<!ATTLIST xsl:stylesheet id ID #REQUIRED>]>
 <!--
 	https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor/Basic_Example
 	https://stackoverflow.com/a/9530410
+	https://stackoverflow.com/questions/3387127/set-html5-doctype-with-xslt/10468906#10468906
 -->
 <KB>
 	<xsl:stylesheet id="stylesheet" version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
