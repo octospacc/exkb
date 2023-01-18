@@ -5,122 +5,25 @@
 	https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor/Basic_Example
 	https://stackoverflow.com/a/9530410
 -->
-<doc>
+<KB>
 	<xsl:stylesheet id="stylesheet" version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-		<!-- <xsl:output method="html" doctype-system="about:legacy-compat" encoding="UTF-8" indent="yes"/> -->
 		<xsl:output method="html" encoding="UTF-8"/>
-		<!--
-		<xsl:output indent="yes" use-character-maps="cmap"/>
-		<xsl:character-map name="cmap">
-			<xsl:output-character character="&lt;" string="&lt;"/>
-			<xsl:output-character character="&gt;" string="&gt;"/>
-		</xsl:character-map>
-		-->
-		<!--
-		<xsl:template match="xsl:stylesheet"/>
-		<xsl:variable name="a" select="/doc/list/movie/seen[@value ='Yes']" />
-		<xsl:variable name="b" select="/doc/list/movie/seen" />
-		<xsl:variable name="c" select="sum(/doc/list/movie/rating/@value)" />
-		<xsl:variable name="d" select="$c div count($a)" />
-		<xsl:variable name="e" select="count($a) div count($b)" />
-		<xsl:variable name="f" select="/doc/list/movie/seen[@value ='No']" />
-		<xsl:variable name="g" select="/doc/list/movie/seen[@value ='Prior']" />
-		<xsl:variable name="h" select="count($f) div count($b)" />
-		<xsl:variable name="j" select="count($g) div count($b)" />
-		<xsl:variable name="minutes_total" select="sum(/doc/list/movie/length[@value ='y'])" />
-		<xsl:variable name="minutes" select="$minutes_total mod 60" />
-		<xsl:variable name="hours" select="floor($minutes_total div 60) mod 24" />
-		<xsl:variable name="hours2" select="floor($minutes_total div 60)" />
-		<xsl:variable name="days" select="floor($hours2 div 24)" />
-		<xsl:decimal-format name="percent"/>
-		<xsl:decimal-format name="average" decimal-separator="."/>
-		-->
-		<!--
-		<xsl:template match="@* | node()">
-			<xsl:copy>
-				<xsl:apply-templates select="@* | node()"/>
-			</xsl:copy>
-		</xsl:template>
-		-->
-		<!--
-		<xsl:template match="KB-Transclude">
-			<xsl:element name="{@name}">
-				<xsl:apply-templates select="./book[author/name = 'John']"/>
-			</xsl:element>
-		</xsl:template>
-		-->
-		<!--
-		<xsl:template match="a">
-			<xsl:element name="a">
-				<xsl:attribute name="href">
-					<xsl:value-of select="@href"/>
-				</xsl:attribute>
-				<xsl:apply-templates/>
-			</xsl:element>
-		</xsl:template>
-		-->
-		<xsl:template match="*">
-			<xsl:copy-of select="."/>
-			<!--<xsl:apply-templates/>-->
-		</xsl:template>
-		<!--
-		<xsl:template match="*">
-			<xsl:element name="{name()}">
-				<xsl:apply-templates select="@*|node()"/>
-	    	</xsl:element>
-		</xsl:template>
-		-->
-		<xsl:template name="include-content">
-			<xsl:param name="node" select="/"/>
-			<xsl:apply-templates select="$node/*"/>
-		</xsl:template>
 
 		<xsl:template match="*">
 			<xsl:copy-of select="."/>
 		</xsl:template>
 
 		<xsl:template match="KB-Transclude">
+			<xsl:variable name="Title" select="@Title"/>
 			<div>
-				<!--<xsl:variable name="Title"></xsl:variable>-->
-				<xsl:copy-of select="/doc/KB-Articles/KB-Article[KB-Title=&apos;Altro&apos;]/KB-Content"/>
+				<xsl:copy-of select="/KB/KB-Articles/KB-Article[KB-Title=string($Title)]/KB-Content"/>
 			</div>
 		</xsl:template>
 
-		<xsl:template match="/doc">
+		<xsl:template match="/KB">
 			<html>
 				<head>
 					<style>
-/*
-h2 {
-	font-family: Courier, Courier New, monospace;
-	font-size: 32px;
-	text-decoration: underline;
-}
-body {
-	font-family: Courier New, monospace;
-}
-p {
-	font-size: 16px;
-}
-table {
-	font-size: 14px;
-}
-.title {
-	text-align:left;
-}
-.release {
-	text-align:center;
-}
-.seen {
-	text-align:center;
-}
-.rating {
-	text-align:right;
-}
-.length {
-	text-align:center;
-}
-*/
 					</style>
 				</head>
 				<body>
@@ -129,145 +32,29 @@ table {
 					<xsl:for-each select="KB-Articles/KB-Article">
 						<h2><xsl:value-of select="KB-Title"/></h2>
 						<div>
-						<!--xsl:value-of select="KB-Content" disable-output-escaping="yes"/-->
-						<xsl:apply-templates select="KB-Content/*"/>
+							<xsl:apply-templates select="KB-Content/*"/>
 						</div>
-						<!--
-						<div>
-						<xsl:copy>
-							<xsl:apply-templates select="KB-Content"/>
-							<!- -xsl:value-of select="replace(., '&amp;','and')"/- ->
-						</xsl:copy>
-						</div>
-						-->
 					</xsl:for-each>
-					<!--
-					<h2>My Movie List</h2>
-					<p>Movies seen so far: <xsl:value-of select="count($a)" />/<xsl:value-of select="count($b)" /> = <xsl:value-of select="format-number($e, '#%', 'percent')" /><br />
-					Movies yet to see: <xsl:value-of select="count($f)" />/<xsl:value-of select="count($b)" /> = <xsl:value-of select="format-number($h, '#%', 'percent')" /><br />
-					Movies seen prior to making list: <xsl:value-of select="count($g)" />/<xsl:value-of select="count($b)" /> = <xsl:value-of select="format-number($j, '#%', 'percent')" /><br />
-					Total time watched: <xsl:value-of select="format-number($days, '#0')" /> days, <xsl:value-of select="format-number($hours, '#0')" /> hours, <xsl:value-of select="format-number($minutes, '#0')" /> minutes<br />
-					Average rating:  <xsl:value-of select="format-number($d, '#.000', 'average')" /> stars out of 5</p>
-					<br />
-					<table border="1">
-						<tr>
-							<th>#</th>
-							<th>Title</th>
-							<th>Release Date</th>
-							<th>Length</th>
-							<th>Seen</th>
-							<th>Rating</th>
-						</tr>
-						<xsl:for-each select="list/movie">
-							<xsl:choose>
-								<xsl:when test='seen = "Yes"'>
-									<tr style="background-color:#666; color:#fff">
-										<td> <xsl:number /></td>
-										<td class="title"><xsl:value-of select="title"/></td>
-										<td class="release"><xsl:value-of select="release"/></td>
-										<td class="length"><xsl:value-of select="length" /> minutes</td>
-										<td class="seen"><xsl:value-of select="seen"/></td>
-										<td class="rating"><xsl:value-of select="rating"/></td>
-									</tr>
-								</xsl:when>
-								<xsl:when test='seen = "Seen prior to making list"'>
-									<tr style="background-color:#999; color:#000">
-										<td> <xsl:number /></td>
-										<td class="title"><xsl:value-of select="title"/></td>
-										<td class="release"><xsl:value-of select="release"/></td>
-										<td class="length"><xsl:value-of select="length"/> minutes</td>
-										<td class="seen"><xsl:value-of select="seen"/></td>
-										<td class="rating"><xsl:value-of select="rating"/></td>
-									</tr>
-								</xsl:when>
-								<xsl:otherwise>
-									<tr style="background-color:#fff;">
-										<td> <xsl:number /></td>
-										<td class="title"><xsl:value-of select="title"/></td>
-										<td class="release"><xsl:value-of select="release"/></td>
-										<td class="length"><xsl:value-of select="length" /> minutes</td>
-										<td class="seen"><xsl:value-of select="seen"/></td>
-										<td class="rating"><xsl:value-of select="rating"/></td>
-									</tr>
-								</xsl:otherwise>
-							</xsl:choose>
-						</xsl:for-each>
-					</table>
-					-->
 				</body>
 			</html>
 		</xsl:template>
 	</xsl:stylesheet>
-	<!--
-	<list>
-		<movie>
-			<title>2001: A Space Odyssey</title>
-			<release>1968</release>
-			<seen value="No">No</seen>
-			<rating>N/A</rating>
-			<length value="n">141</length>
-		</movie>
-		<movie>
-			<title>28 Weeks Later</title>
-			<release>2007</release>
-			<seen value="No">No</seen>
-			<rating>N/A</rating>
-			<length value="n">100</length>
-		</movie>
-		<movie>
-			<title>A Clockwork Orange</title>
-			<release>1971</release>
-			<seen value="Yes">Yes</seen>
-			<rating value="2">&#9734;&#9734;&#9734;&#9733;&#9733;</rating>
-			<length value="y">136</length>
-		</movie>
-	</list>
-	-->
 	<KB-Articles>
-		<!--
-		<KB-Article>
-			<KB-Title>Test</KB-Title>
-			<KB-Content>&lt;p style="color: red;"&gt;Testing the test&lt;/p&gt;</KB-Content>
-			<KB-Content-Type>text/html</KB-Content-Type>
-		</KB-Article>
-		<KB-Article>
-			<KB-Title>Secondo test</KB-Title>
-			<KB-Content>&lt;div&gt;Testo sotto&lt;/div&gt;</KB-Content>
-			<KB-Content-Type>text/plain</KB-Content-Type>
-		</KB-Article>
-		-->
+
 		<KB-Article>
 			<KB-Title>Test</KB-Title>
 			<KB-Content>
 				<span style="color: red;">Testing the test - <a href="Test">Test</a> </span><a href="Test">Test</a>
-				<!--
-				<xsl:call-template name="include-content">
-					<xsl:with-param name="node" select="/KB-Articles/KB-Article[KB-Title='Altro']/KB-Content"/>
-				</xsl:call-template>
-				-->
-				<!--
-				<xsl:copy-of select="/doc/KB-Articles/KB-Article[KB-Title='Altro']/KB-Content"/>
-				-->
-				<KB-Transclude/>
+				<KB-Transclude Title="Altro"/>
 			</KB-Content>
 			<KB-Content-Type>text/html</KB-Content-Type>
 		</KB-Article>
+
 		<KB-Article>
 			<KB-Title>Altro</KB-Title>
 			<KB-Content><div>Testo sotto</div></KB-Content>
 			<KB-Content-Type>text/plain</KB-Content-Type>
 		</KB-Article>
-		<!--
-		<KB-Article>
-			<KB-Title>Test</KB-Title>
-			<KB-Content><![CDATA[<p style="color: red;">Testing the test</p>]]></KB-Content>
-			<KB-Content-Type>text/html</KB-Content-Type>
-		</KB-Article>
-		<KB-Article>
-			<KB-Title>Secondo test</KB-Title>
-			<KB-Content><![CDATA[<div>Testo sotto</div>]]></KB-Content>
-			<KB-Content-Type>text/plain</KB-Content-Type>
-		</KB-Article>
-		-->
+
 	</KB-Articles>
-</doc>
+</KB>
