@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		html, body, iframe { width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; }
+	</style>
+	<script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+	<script>eruda.init();</script>
+</head>
+<body>
+<iframe frameborder="0" src='data:text/xml;utf8,
+<!--
+<?xml version="1.0" encoding="UTF-8"?>
+-->
+<?xml-stylesheet type="text/xsl" href="%23stylesheet"?>
+<!DOCTYPE html [<!ATTLIST xsl:stylesheet id ID %23REQUIRED>]>
+<!--
+	https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor/Basic_Example
+	https://stackoverflow.com/a/9530410
+-->
+<doc>
+	<xsl:stylesheet id="stylesheet" version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+		<xsl:output method="html" encoding="UTF-8"/>
+		<xsl:template name="include-content">
+			<xsl:param name="node" select="/"/>
+			<xsl:apply-templates select="$node/*"/>
+		</xsl:template>
+
+		<xsl:template match="*">
+			<xsl:copy-of select="."/>
+		</xsl:template>
+
+		<xsl:template match="/doc">
+			<html>
+				<head>
+				</head>
+				<body>
+					<textarea id="Console"></textarea>
+					<button onclick="alert(eval(Console.value));">Eval</button>
+					<xsl:for-each select="KB-Articles/KB-Article">
+						<h2><xsl:value-of select="KB-Title"/></h2>
+						<div>
+						<!--xsl:value-of select="KB-Content" disable-output-escaping="yes"/-->
+						<xsl:apply-templates select="KB-Content/*"/>
+						</div>
+					</xsl:for-each>
+				</body>
+			</html>
+		</xsl:template>
+	</xsl:stylesheet>
+	<KB-Articles>
+		<KB-Article>
+			<KB-Title>Test</KB-Title>
+			<KB-Content><span style="color: red;">Testing the test - <a href="Test">Test</a> </span><a href="Test">Test</a></KB-Content>
+			<KB-Content-Type>text/html</KB-Content-Type>
+		</KB-Article>
+		<KB-Article>
+			<KB-Title>Altro</KB-Title>
+			<KB-Content><div>Testo sotto</div></KB-Content>
+			<KB-Content-Type>text/plain</KB-Content-Type>
+		</KB-Article>
+	</KB-Articles>
+</doc>
+'></iframe>
+</body>
+</html>

@@ -35,28 +35,56 @@
 		<xsl:decimal-format name="percent"/>
 		<xsl:decimal-format name="average" decimal-separator="."/>
 		-->
+		<!--
+		<xsl:template match="@* | node()">
+			<xsl:copy>
+				<xsl:apply-templates select="@* | node()"/>
+			</xsl:copy>
+		</xsl:template>
+		-->
+		<!--
+		<xsl:template match="KB-Transclude">
+			<xsl:element name="{@name}">
+				<xsl:apply-templates select="./book[author/name = 'John']"/>
+			</xsl:element>
+		</xsl:template>
+		-->
+		<!--
+		<xsl:template match="a">
+			<xsl:element name="a">
+				<xsl:attribute name="href">
+					<xsl:value-of select="@href"/>
+				</xsl:attribute>
+				<xsl:apply-templates/>
+			</xsl:element>
+		</xsl:template>
+		-->
+		<xsl:template match="*">
+			<xsl:copy-of select="."/>
+			<!--<xsl:apply-templates/>-->
+		</xsl:template>
+		<!--
+		<xsl:template match="*">
+			<xsl:element name="{name()}">
+				<xsl:apply-templates select="@*|node()"/>
+	    	</xsl:element>
+		</xsl:template>
+		-->
+		<xsl:template name="include-content">
+			<xsl:param name="node" select="/"/>
+			<xsl:apply-templates select="$node/*"/>
+		</xsl:template>
 
-<xsl:template match="a">
-    <xsl:element name="a">
-        <xsl:attribute name="href">
-            <xsl:value-of select="@href"/>
-        </xsl:attribute>
-        <xsl:apply-templates/>
-    </xsl:element>
-</xsl:template>
+		<xsl:template match="*">
+			<xsl:copy-of select="."/>
+		</xsl:template>
 
-<xsl:template match="*">
-    <xsl:copy-of select="."/>
-    <!--<xsl:apply-templates/>-->
-</xsl:template>
-
-<!--
-<xsl:template match="*">
-    <xsl:element name="{name()}">
-        <xsl:apply-templates select="@*|node()"/>
-    </xsl:element>
-</xsl:template>
--->
+		<xsl:template match="KB-Transclude">
+			<div>
+				<!--<xsl:variable name="Title"></xsl:variable>-->
+				<xsl:copy-of select="/doc/KB-Articles/KB-Article[KB-Title=&apos;Altro&apos;]/KB-Content"/>
+			</div>
+		</xsl:template>
 
 		<xsl:template match="/doc">
 			<html>
@@ -96,7 +124,8 @@ table {
 					</style>
 				</head>
 				<body>
-					<button>New</button>
+					<textarea id="Console"></textarea>
+					<button onclick="alert(eval(Console.value));">Eval</button>
 					<xsl:for-each select="KB-Articles/KB-Article">
 						<h2><xsl:value-of select="KB-Title"/></h2>
 						<div>
@@ -209,11 +238,22 @@ table {
 		-->
 		<KB-Article>
 			<KB-Title>Test</KB-Title>
-			<KB-Content><span style="color: red;">Testing the test - <a href="Test">Test</a> </span><a href="Test">Test</a></KB-Content>
+			<KB-Content>
+				<span style="color: red;">Testing the test - <a href="Test">Test</a> </span><a href="Test">Test</a>
+				<!--
+				<xsl:call-template name="include-content">
+					<xsl:with-param name="node" select="/KB-Articles/KB-Article[KB-Title='Altro']/KB-Content"/>
+				</xsl:call-template>
+				-->
+				<!--
+				<xsl:copy-of select="/doc/KB-Articles/KB-Article[KB-Title='Altro']/KB-Content"/>
+				-->
+				<KB-Transclude/>
+			</KB-Content>
 			<KB-Content-Type>text/html</KB-Content-Type>
 		</KB-Article>
 		<KB-Article>
-			<KB-Title>Secondo test</KB-Title>
+			<KB-Title>Altro</KB-Title>
 			<KB-Content><div>Testo sotto</div></KB-Content>
 			<KB-Content-Type>text/plain</KB-Content-Type>
 		</KB-Article>
