@@ -1,0 +1,16 @@
+## Resources
+
+XSLT Reference: https://learn.microsoft.com/en-us/previous-versions/dotnet/netframework-4.0/ms256069(v=vs.100)
+Example: https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor/Basic_Example
+: https://stackoverflow.com/a/9530410
+: https://stackoverflow.com/questions/3387127/set-html5-doctype-with-xslt/10468906#10468906
+: https://gist.github.com/fidothe/9da736aadee12629f5df
+
+## Single-file methods to consider
+
+: Main file is an HTML file, XML is loaded with an iframe and ~~srcdoc~~
+; Just use data URI to support older browsers
+; Would ~~require JS on older browsers (https://github.com/jugglinmike/srcdoc-polyfill), but~~ make the file smaller and the logic leaner, and open fine from local storage on mobile (.XML doesn't)
+
+: Main file is XML, the JS logic reconstructs the data from the HTML body the browser processed
+; More complicated but should give better support on older browsers
