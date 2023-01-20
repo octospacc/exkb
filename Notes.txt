@@ -1,10 +1,13 @@
 ## Resources
 
-XSLT Reference: https://learn.microsoft.com/en-us/previous-versions/dotnet/netframework-4.0/ms256069(v=vs.100)
+XSLT Reference:
+- https://developer.mozilla.org/en-US/docs/Web/XSLT
+- https://learn.microsoft.com/en-us/previous-versions/dotnet/netframework-4.0/ms256069(v=vs.100)
 Example: https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor/Basic_Example
 : https://stackoverflow.com/a/9530410
 : https://stackoverflow.com/questions/3387127/set-html5-doctype-with-xslt/10468906#10468906
 : https://gist.github.com/fidothe/9da736aadee12629f5df
+: https://github.com/doriantaylor/xslt-transclusion
 
 ## Single-file methods to consider
 

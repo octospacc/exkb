@@ -2,26 +2,19 @@
 <?xml-stylesheet type="text/xsl" href="#stylesheet"?>
 <!DOCTYPE xml [<!ATTLIST xsl:stylesheet id ID #REQUIRED>]>
 <KB>
-	<!-- <![CDATA[/*]]> -->
-	<xsl:stylesheet id="stylesheet" version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-		<!-- <xsl:output method="html" encoding="UTF-8" cdata-section-element="KB-Data" use-character-maps="cmap"/> -->
+	<xsl:stylesheet id="stylesheet" version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<xsl:output method="html" encoding="UTF-8"/>
 
 		<xsl:template match="*">
 			<xsl:copy-of select="."/>
 		</xsl:template>
 
-		<!--
-		<xsl:template match="KB-Return">
-			<xsl:variable name="Value" select="@Value"/>
-			<xsl:value-of select="$Value"/>
-		</xsl:template>
-		-->
-
 		<xsl:template match="KB-Transclude">
+			<xsl:variable name="Prefix" select="/KB/KB-Data/KB-Articles/KB-Article"/>
 			<xsl:variable name="Name" select="@Name"/>
 			<div>
-				<xsl:copy-of select="/KB/KB-Data/KB-Articles/KB-Article[KB-Name=string($Name)]/KB-Content"/>
+				<xsl:copy-of select="$Prefix[KB-Name=string($Name)]/KB-Content"/>
+				<xsl:apply-templates select="$Prefix[KB-Name=string($Name)]/KB-Content/KB-Transclude"/>
 			</div>
 		</xsl:template>
 
@@ -30,42 +23,18 @@
 				<head>
 					<style>
 					</style>
-					<!--
-					<KB-Dump>
-						<xsl:copy-of select="/"/>
-					</KB-Dump>
-					-->
-					<!--
-					<xsl:element name="KB-XML">
-						<xsl:attribute name="data">
-							<xsl:text>
-								<xsl:copy-of select="/"/>
-							</xsl:text>
-						</xsl:attribute>
-					</xsl:element>
-					-->
-					<!--
-					<KB-Data>
-						emme
-						<![CDATA[<]]>
-						<xsl:copy-of select="*"/>
-						<xsl:text>]]&gt;</xsl:text>
-					</KB-Data>
-					-->
-					<!--<KB-Data>-->
-						<!-- <![CDATA[<script>/*]]> -->
 					<script id="KB-Data">
 						/*
 							<xsl:copy-of select="/KB/KB-Data"/>
 						*/
 					</script>
-					<!--</KB-Data>-->
 				</head>
 				<body>
 					<textarea id="Console"></textarea>
+					<button onclick="alert(NewArticle(););">New</button>
 					<button onclick="alert(eval(Console.value));">Eval</button>
 					<xsl:for-each select="KB-Data/KB-Articles/KB-Article">
-						<div>
+						<div class="KB-Article">
 							<h2><xsl:value-of select="KB-Name"/></h2>
 							<div>
 								<xsl:apply-templates select="KB-Content/*"/>
@@ -73,14 +42,22 @@
 						</div>
 					</xsl:for-each>
 					<script>
-let KBData = document.getElementById('KB-Data').outerHTML;
-KBData = KBData.substring(
-  KBData.indexOf('/*') + 2,
-  KBData.indexOf('*/')
-);
-const Parse = new DOMParser();
-KBData = Parse.parseFromString(KBData, 'text/xml');
-console.log(KBData);
+const function GetData() {
+	let KBData = document.getElementById('KB-Data').outerHTML;
+	KBData = KBData.substring(
+		KBData.indexOf('/*') + 2,
+		KBData.indexOf('*/')
+	);
+	const Parse = new DOMParser();
+	KBData = Parse.parseFromString(KBData, 'text/xml');
+	return KBData;
+};
+
+const function NewArticle() {
+	const Parse = new DOMParser();
+	let Article = Parse.parseFromString('<Test>Test</Test>', 'text/xml');
+	return Article;
+};
 					</script>
 				</body>
 			</html>
@@ -100,12 +77,28 @@ console.log(KBData);
 
 			<KB-Article>
 				<KB-Name>Altro</KB-Name>
-				<KB-Content><div>Testo sotto</div></KB-Content>
+				<KB-Content>
+					<div>Testo sotto</div>
+					<KB-Transclude Name="3"/>
+				</KB-Content>
 				<KB-Content-Type>text/plain</KB-Content-Type>
+			</KB-Article>
+
+			<KB-Article>
+				<KB-Name>3</KB-Name>
+				<KB-Content>
+					<div>Test 3</div>
+					<KB-Transclude Name="4"/>
+				</KB-Content>
+				<KB-Content-Type>text/html</KB-Content-Type>
+			</KB-Article>
+
+			<KB-Article>
+				<KB-Name>4</KB-Name>
+				<KB-Content><div>4 Test</div></KB-Content>
+				<KB-Content-Type>text/kbml</KB-Content-Type>
 			</KB-Article>
 
 		</KB-Articles>
 	</KB-Data>
-	<!-- <![CDATA[*/]]> -->
-	<!-- <![CDATA[*/</script>]]> -->
 </KB>
