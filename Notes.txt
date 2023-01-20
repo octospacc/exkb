@@ -17,3 +17,12 @@ Example: https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor/Basic_Ex
 
 : Main file is XML, the JS logic reconstructs the data from the HTML body the browser processed
 ; More complicated but should give better support on older browsers
+
+### Notes
+
+XML is not supported on some browsers. But we can load the XML code as broken HTML and it will be rendered well enough to execute scripts:
+- Workaround works:
+	- new 3DS
+
+Anyways, we will need to either polyfill or/and transpile code to target older ECMAScript specs (ES3?), or directly write retrocompatible code:
+: https://stackoverflow.com/questions/40205547/using-babel-to-transpile-to-es3-safari-compliant

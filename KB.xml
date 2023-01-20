@@ -32,7 +32,8 @@
 				<body>
 					<textarea id="Console"></textarea>
 					<button onclick="alert(NewArticle(););">New</button>
-					<button onclick="alert(eval(Console.value));">Eval</button>
+					<!-- Note: Try catch here breaks XML wtf -->
+					<button onclick="alert(eval('try{'+Console.value+'}catch(e){alert(e)}'));">Eval</button>
 					<xsl:for-each select="KB-Data/KB-Articles/KB-Article">
 						<div class="KB-Article">
 							<h2><xsl:value-of select="KB-Name"/></h2>
@@ -42,8 +43,8 @@
 						</div>
 					</xsl:for-each>
 					<script>
-const function GetData() {
-	let KBData = document.getElementById('KB-Data').outerHTML;
+const GetData = function GetData() {
+	var KBData = document.getElementById('KB-Data').outerHTML;
 	KBData = KBData.substring(
 		KBData.indexOf('/*') + 2,
 		KBData.indexOf('*/')
@@ -53,11 +54,12 @@ const function GetData() {
 	return KBData;
 };
 
-const function NewArticle() {
+const NewArticle = function NewArticle() {
 	const Parse = new DOMParser();
-	let Article = Parse.parseFromString('<Test>Test</Test>', 'text/xml');
-	return Article;
+	return Parse.parseFromString('<Test>Test</Test>', 'text/xml');
 };
+
+alert(1);
 					</script>
 				</body>
 			</html>
