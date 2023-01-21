@@ -7,7 +7,7 @@ pages:
   stage: deploy
   script: |
     mkdir -p ./public
-    cp * ./public/
+    cp * ./public/ || true
     cd ./public
     sh ./Make.sh
   artifacts:
