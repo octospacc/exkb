@@ -33,7 +33,8 @@
 					<textarea id="Console"></textarea>
 					<button onclick="alert(NewArticle(););">New</button>
 					<!-- Note: Try catch here breaks XML wtf -->
-					<button onclick="alert(eval('try{'+Console.value+'}catch(e){alert(e)}'));">Eval</button>
+					<!-- <button onclick="alert(eval('try{'+Console.value+'}catch(e){alert(e)}'));">Eval</button> -->
+					<button onclick="alert(eval(Console.value));">Eval</button>
 					<xsl:for-each select="KB-Data/KB-Articles/KB-Article">
 						<div class="KB-Article">
 							<h2><xsl:value-of select="KB-Name"/></h2>
