@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="#stylesheet"?>
-<!DOCTYPE xml [<!ATTLIST xsl:stylesheet id ID #REQUIRED>]>
-<KB>
-	<xsl:stylesheet id="stylesheet" version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-		<xsl:output method="html" encoding="UTF-8"/>
+	<xsl:stylesheet id="stylesheet" version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"> 
+		<xsl:output method="html" encoding="UTF-8" />
 
 		<xsl:template match="*">
 			<xsl:copy-of select="."/>
@@ -20,15 +17,12 @@
 
 		<xsl:template match="/KB">
 			<html>
-				<head>
-					<style>
-					</style>
-					<script id="KB-Data">
-						/*
-							<xsl:copy-of select="/KB/KB-Data"/>
-						*/
-					</script>
-				</head>
+				<!--<head>-->
+				<!--<xsl:include href="Head.xml" />-->
+				<xsl:copy-of select="document('HTML-Head.xml')" />
+				<!--</head>-->
+				<xsl:copy-of select="document('HTML-Body.xml')" />
+				<!--<xsl:include href="HTML-Body.xml" />-->
 				<body>
 					<textarea id="Console"></textarea>
 					<button onclick="alert(NewArticle(););">New</button>
@@ -88,42 +82,3 @@ alert(1);
 			</html>
 		</xsl:template>
 	</xsl:stylesheet>
-	<KB-Data>
-		<KB-Files>
-
-			<KB-File>
-				<KB-Name>Test</KB-Name>
-				<KB-Content>
-					<span style="color: red;">Testing the test - <a href="Test">Test</a> </span><a href="Test">Test</a>
-					<KB-Transclude Name="Altro"/>
-				</KB-Content>
-				<KB-Content-Type>text/html</KB-Content-Type>
-			</KB-File>
-
-			<KB-File>
-				<KB-Name>Altro</KB-Name>
-				<KB-Content>
-					<div>Testo sotto</div>
-					<KB-Transclude Name="3"/>
-				</KB-Content>
-				<KB-Content-Type>text/plain</KB-Content-Type>
-			</KB-File>
-
-			<KB-File>
-				<KB-Name>3</KB-Name>
-				<KB-Content>
-					<div>Test 3</div>
-					<KB-Transclude Name="4"/>
-				</KB-Content>
-				<KB-Content-Type>text/html</KB-Content-Type>
-			</KB-File>
-
-			<KB-File>
-				<KB-Name>4</KB-Name>
-				<KB-Content><div>4 Test</div></KB-Content>
-				<KB-Content-Type>text/kbml</KB-Content-Type>
-			</KB-File>
-
-		</KB-Files>
-	</KB-Data>
-</KB>
