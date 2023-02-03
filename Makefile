@@ -2,7 +2,7 @@ all: Files
 clean: Clean
 
 Files:
-	cp ./KB.xml ./KB.xhtml && cp ./KB.xml ./KB.xml.html # For testing on different browsers
+	sh ./Tools/Make.Files.sh
 
 Clean:
-	rm ./KB.xhtml ./KB.xml.html
+	rm -rf ./Build

@@ -1,15 +1,14 @@
 image: alpine:latest
 
 before_script: |
-  echo null
+  apk add make
 
 pages:
   stage: deploy
   script: |
+    make
     mkdir -p ./public
-    cp * ./public/ || true
-    cd ./public
-    sh ./Make.sh
+    cp -r ./Build/* ./public/
   artifacts:
     paths:
     - public
